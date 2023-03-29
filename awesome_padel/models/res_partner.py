@@ -8,3 +8,11 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     is_club = fields.Boolean()
+
+    location = fields.Char(string="Location of the Club")
+
+    nivel_padel = fields.Selection(
+        [("paquete","Paquete"),
+        ("amateur","Amateu"),
+        ("prof","Profesional"),
+        ("top", "TOP 10")])

@@ -11,22 +11,35 @@ logger = logging.getLogger(__name__)
 import time
 
 
-class AwesomeTshirt(http.Controller):
+class AwesomePadel(http.Controller):
 
-    @http.route(['/padel_app/get_partner'], type='http', auth='none')
-    def get_partner(self, is_club=False):
-        """
-        Renders the public page to make orders
-        """
-        partner_dicc= {}
+
+    @http.route(['/padel_app/get_players'], type='http', auth='none')
+    def get_players(self):
+        partner_dicc = {}
         response = Response()
         response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST'
+        response.headers['Access-Control-Allow-Methods'] = 'GET'
         response.headers['Connection'] = 'close'
         response.headers['Date'] = time.strftime("%a, %d-%b-%Y %T GMT", time.gmtime())
         response.headers['Expires'] = time.strftime("%a, %d-%b-%Y %T GMT", time.gmtime(time.time() + 604800*60))
-        partners = request.env["res.partner"].sudo().search([('is_club', '=', is_club)])
-        for partner in partners:
-            partner_dicc[partner.id] = {"name": partner.name, "email": partner.email}
+        players = request.env["res.partner"].sudo().search([()])
+        for player in players:
+            partner_dicc[player.id] = {"name": player.name, "email": player.email, "nivel": player.nivel_padel}
         response.data = json.dumps(partner_dicc)
+        return response
+
+    @http.route(['/padel_app/get_clubs'], type='http', auth='none')
+    def get_club(self):
+        club_dicc = {}
+        response = Response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET'
+        response.headers['Connection'] = 'close'
+        response.headers['Date'] = time.strftime("%a, %d-%b-%Y %T GMT", time.gmtime())
+        response.headers['Expires'] = time.strftime("%a, %d-%b-%Y %T GMT", time.gmtime(time.time() + 604800 * 60))
+        clubs = request.env["res.partner"].sudo().search([('is_club', '=', True)])
+        for club in clubs:
+            club_dicc[club.id] = {"name": club.name, "email": club.email, "location": club.location}
+        response.data = json.dumps(club_dicc)
         return response

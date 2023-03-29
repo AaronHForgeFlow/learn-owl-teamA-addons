@@ -8,6 +8,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="is_club"/>
+                    <field name="nivel_padel" attrs="{'invisible': [('is_club', '=', True)]}"/>
+                    <field name="location" attrs="{'invisible': [('is_club', '=', False)]}"/>
                 </xpath>
             </field>
         </record>
