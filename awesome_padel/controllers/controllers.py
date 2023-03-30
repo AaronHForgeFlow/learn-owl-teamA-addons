@@ -48,4 +48,5 @@ class AwesomePadel(http.Controller):
     def save_player(self, **kwargs):
         data = json.loads(request.httprequest.data)
         # TODO:  do smth with data
+        request.env["res.partner"].sudo().create_padel_partner(data.get("params", False), data.get("other", False))
         return json.dumps({})
