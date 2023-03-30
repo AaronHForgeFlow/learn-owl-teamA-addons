@@ -23,7 +23,7 @@ class AwesomePadel(http.Controller):
         response.headers['Connection'] = 'close'
         response.headers['Date'] = time.strftime("%a, %d-%b-%Y %T GMT", time.gmtime())
         response.headers['Expires'] = time.strftime("%a, %d-%b-%Y %T GMT", time.gmtime(time.time() + 604800*60))
-        players = request.env["res.partner"].sudo().search([()])
+        players = request.env["res.partner"].sudo().search([('is_club', '=', False)])
         for player in players:
             partner_dicc[player.id] = {"name": player.name, "email": player.email, "nivel": player.nivel_padel}
         response.data = json.dumps(partner_dicc)
@@ -43,3 +43,9 @@ class AwesomePadel(http.Controller):
             club_dicc[club.id] = {"name": club.name, "email": club.email, "location": club.location}
         response.data = json.dumps(club_dicc)
         return response
+
+    @http.route('/padel_app/save_player', auth='none', type='json', methods=['POST', 'GET'], cors="*", csrf=False)
+    def save_player(self, **kwargs):
+        data = json.loads(request.httprequest.data)
+        # TODO:  do smth with data
+        return json.dumps({})
