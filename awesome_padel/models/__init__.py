@@ -3,3 +3,4 @@
 
 from . import res_partner
 
+# from . import padel_log
